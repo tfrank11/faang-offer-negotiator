@@ -52,7 +52,7 @@ const Landing = () => {
       <animated.div style={fade}>
         <div className="w-full text-center">
           <h1 className="font-roboto text-[40px] mt-10 font-semibold text-purple-500">
-            GPT3 FAANG Offer Negotiation
+            GPT4 FAANG Offer Negotiation
           </h1>
           <h3 className="italic text-[20px]">
             How high can you negotiate your TC?
