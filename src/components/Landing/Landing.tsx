@@ -6,6 +6,8 @@ import { SetPageContext } from "../../App";
 import { useFadeTransition } from "../../common/useFadeTransition";
 import { AppPage } from "../../common/types";
 import { useAuth } from "../../common/useAuth";
+import { generatePaymentLink } from "../../common/api";
+import { LoadingButton } from "@mui/lab";
 
 const Landing = () => {
   const setPage = useContext(SetPageContext);
@@ -23,6 +25,25 @@ const Landing = () => {
       setPage(AppPage.GAME);
     }
   }, [auth.user, setPage]);
+
+  const [isBuyTokensButtonLoading, setIsBuyTokensButtonLoading] =
+    useState(false);
+  const isBuyTokensButtonDisabled = !auth.user || isBuyTokensButtonLoading;
+  const onClickBuyMoreTokens = useCallback(() => {
+    const uid = auth.user?.uid;
+    if (!uid) {
+      return;
+    }
+    setIsBuyTokensButtonLoading(true);
+
+    (async () => {
+      const paymentLink = await generatePaymentLink(uid);
+      if (paymentLink) {
+        window.open(paymentLink, "_blank")?.focus();
+      }
+      setIsBuyTokensButtonLoading(false);
+    })();
+  }, [auth.user]);
 
   const { fade, slide } = useFadeTransition();
 
@@ -58,13 +79,16 @@ const Landing = () => {
               />
             )}
             <div>
-              <Button
+              <LoadingButton
                 className="w-fit mx-auto"
+                onClick={onClickBuyMoreTokens}
                 variant={tokens > 0 ? "outlined" : "contained"}
                 color="success"
+                disabled={isBuyTokensButtonDisabled}
+                loading={isBuyTokensButtonLoading}
               >
                 Buy More
-              </Button>
+              </LoadingButton>
             </div>
           </div>
         </div>
