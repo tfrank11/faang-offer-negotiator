@@ -55,7 +55,7 @@ const Landing = () => {
             GPT4 FAANG Offer Negotiation
           </h1>
           <h3 className="italic text-[20px]">
-            How high can you negotiate your TC?
+            🚀How high can you negotiate your TC?🚀
           </h3>
           <img
             src="hr-manager-skills.jpg"
