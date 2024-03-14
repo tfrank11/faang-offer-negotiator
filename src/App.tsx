@@ -9,7 +9,7 @@ import { firebaseConfig } from "./firebaseConfig";
 import { Auth, getAuth } from "firebase/auth";
 import { createContext, useEffect, useMemo, useState } from "react";
 import Game from "./components/Game/Game";
-import { AppPage, IUserInfo } from "./common/types";
+import { AppPage, IAppContext, IUserInfo } from "./common/types";
 import { useGetUserInfo } from "./common/useGetUserInfo";
 import { Firestore, getFirestore } from "firebase/firestore";
 
@@ -23,20 +23,24 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export const AuthContext = createContext<Auth | undefined>(undefined);
-export const SetPageContext = createContext<
-  ((val: AppPage) => void) | undefined
->(undefined);
+export const AppContext = createContext<IAppContext | undefined>(undefined);
 export const UserInfoContext = createContext<IUserInfo | undefined>(undefined);
 export const DBContext = createContext<Firestore>(db);
 
 function App() {
-  const [page, setPage] = useState(AppPage.LANDING);
   const auth = getAuth(app);
   const userInfo = useGetUserInfo(auth.currentUser?.uid);
 
-  const setPageContextValue = useMemo(() => {
-    return setPage;
-  }, []);
+  const [page, setPage] = useState(AppPage.LANDING);
+  const [threadId, setThreadId] = useState("");
+
+  const appContextValue = useMemo(() => {
+    return {
+      setPage,
+      threadId,
+      setThreadId,
+    };
+  }, [threadId]);
 
   useEffect(() => {
     if (!auth.currentUser) {
@@ -48,7 +52,7 @@ function App() {
     <AuthContext.Provider value={auth}>
       <DBContext.Provider value={db}>
         <UserInfoContext.Provider value={userInfo}>
-          <SetPageContext.Provider value={setPageContextValue}>
+          <AppContext.Provider value={appContextValue}>
             <ThemeProvider theme={darkTheme}>
               <CssBaseline />
               <div className="h-screen w-screen bg-black">
@@ -57,7 +61,7 @@ function App() {
                 {page === AppPage.GAME && <Game />}
               </div>
             </ThemeProvider>
-          </SetPageContext.Provider>
+          </AppContext.Provider>
         </UserInfoContext.Provider>
       </DBContext.Provider>
     </AuthContext.Provider>

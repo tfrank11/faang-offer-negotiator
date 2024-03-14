@@ -19,3 +19,9 @@ export enum AppPage {
 export interface IUserInfo {
   tokens: number;
 }
+
+export interface IAppContext {
+  setPage: (val: AppPage) => void;
+  threadId: string;
+  setThreadId: (val: string) => void;
+}

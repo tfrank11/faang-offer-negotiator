@@ -2,17 +2,19 @@ import { Button, Chip } from "@mui/material";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { animated } from "@react-spring/web";
 import { useCallback, useContext, useState } from "react";
-import { SetPageContext } from "../../App";
 import { useFadeTransition } from "../../common/useFadeTransition";
 import { AppPage } from "../../common/types";
 import { useAuth } from "../../common/useAuth";
 import { generatePaymentLink } from "../../common/api";
 import { LoadingButton } from "@mui/lab";
+import { AppContext, UserInfoContext } from "../../App";
 
 const Landing = () => {
-  const setPage = useContext(SetPageContext);
-  const [tokens, setTokens] = useState(2);
+  const appContext = useContext(AppContext);
+  const setPage = appContext?.setPage;
   const auth = useAuth();
+  const userInfo = useContext(UserInfoContext);
+  const tokens = userInfo?.tokens ?? 0;
 
   const onClickInsertToken = useCallback(() => {
     if (!auth.user) {
@@ -22,7 +24,7 @@ const Landing = () => {
     // remove 1 token
     // start game
     if (setPage) {
-      setPage(AppPage.GAME);
+      setPage?.(AppPage.GAME);
     }
   }, [auth.user, setPage]);
 
