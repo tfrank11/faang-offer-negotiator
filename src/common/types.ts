@@ -16,3 +16,6 @@ export enum AppPage {
   LANDING,
   GAME,
 }
+export interface IUserInfo {
+  tokens: number;
+}

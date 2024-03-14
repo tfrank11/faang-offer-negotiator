@@ -1,14 +1,16 @@
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { MonetizationOn } from "@mui/icons-material";
 import { ExitToApp } from "@mui/icons-material";
 import { Button, Chip, IconButton } from "@mui/material";
 import AuthModal from "./AuthModal/AuthModal";
 import { useAuth } from "../common/useAuth";
+import { UserInfoContext } from "../App";
 
 const Navbar = () => {
   const auth = useAuth();
   const user = auth.user;
-  const [tokens, setTokens] = useState(0);
+  const userInfo = useContext(UserInfoContext);
+  const tokens = userInfo?.tokens ?? 0;
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const closeAuthModal = useCallback(() => {
     setIsAuthModalOpen(false);

@@ -9,7 +9,9 @@ import { firebaseConfig } from "./firebaseConfig";
 import { Auth, getAuth } from "firebase/auth";
 import { createContext, useEffect, useMemo, useState } from "react";
 import Game from "./components/Game/Game";
-import { AppPage } from "./common/types";
+import { AppPage, IUserInfo } from "./common/types";
+import { useGetUserInfo } from "./common/useGetUserInfo";
+import { Firestore, getFirestore } from "firebase/firestore";
 
 const darkTheme = createTheme({
   palette: {
@@ -18,15 +20,19 @@ const darkTheme = createTheme({
 });
 
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 export const AuthContext = createContext<Auth | undefined>(undefined);
 export const SetPageContext = createContext<
   ((val: AppPage) => void) | undefined
 >(undefined);
+export const UserInfoContext = createContext<IUserInfo | undefined>(undefined);
+export const DBContext = createContext<Firestore>(db);
 
 function App() {
   const [page, setPage] = useState(AppPage.LANDING);
   const auth = getAuth(app);
+  const userInfo = useGetUserInfo(auth.currentUser?.uid);
 
   const setPageContextValue = useMemo(() => {
     return setPage;
@@ -40,16 +46,20 @@ function App() {
 
   return (
     <AuthContext.Provider value={auth}>
-      <SetPageContext.Provider value={setPageContextValue}>
-        <ThemeProvider theme={darkTheme}>
-          <CssBaseline />
-          <div className="h-screen w-screen bg-black">
-            <Navbar />
-            {page === AppPage.LANDING && <Landing />}
-            {page === AppPage.GAME && <Game />}
-          </div>
-        </ThemeProvider>
-      </SetPageContext.Provider>
+      <DBContext.Provider value={db}>
+        <UserInfoContext.Provider value={userInfo}>
+          <SetPageContext.Provider value={setPageContextValue}>
+            <ThemeProvider theme={darkTheme}>
+              <CssBaseline />
+              <div className="h-screen w-screen bg-black">
+                <Navbar />
+                {page === AppPage.LANDING && <Landing />}
+                {page === AppPage.GAME && <Game />}
+              </div>
+            </ThemeProvider>
+          </SetPageContext.Provider>
+        </UserInfoContext.Provider>
+      </DBContext.Provider>
     </AuthContext.Provider>
   );
 }
