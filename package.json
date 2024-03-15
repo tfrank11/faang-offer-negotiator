@@ -19,11 +19,13 @@
     "@mui/material": "^5.15.12",
     "@react-spring/web": "^9.7.3",
     "firebase": "^10.8.1",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.1.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.0",
     "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
     "@types/tailwindcss": "^3.1.0",

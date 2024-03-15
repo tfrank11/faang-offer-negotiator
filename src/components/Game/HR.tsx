@@ -30,7 +30,7 @@ const HR: React.FC<Props> = ({ mood }) => {
     <>
       <img
         src={imgSrc}
-        className="w-1/3 mx-auto shadow-special-pink rounded-lg mt-10"
+        className="w-[33vh] mx-auto shadow-special-pink rounded-lg mb-2"
       />
     </>
   );

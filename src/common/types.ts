@@ -1,9 +1,3 @@
-export enum GameState {
-  PLAYING,
-  WON,
-  LOST,
-}
-
 export enum HRMood {
   OFFER,
   NORMAL_1,
@@ -24,4 +18,54 @@ export interface IAppContext {
   setPage: (val: AppPage) => void;
   threadId: string;
   setThreadId: (val: string) => void;
+}
+
+interface IMessage {
+  id: string;
+  assistant_id: string;
+  content: {
+    text: {
+      value: string;
+    };
+  }[];
+  role: "user" | "assistant";
+}
+
+interface IAPIResponse<T> {
+  success: boolean;
+  data: T;
+}
+
+export interface ICreateThreadData {
+  threadId: string;
+  assistantId: string;
+  messages: { data: IMessage[] };
+}
+
+export type ICreateThreadResponse = IAPIResponse<ICreateThreadData>;
+
+export enum ThreadOutcome {
+  UNKNOWN,
+  ACCEPTED,
+  RESCINDED,
+}
+
+export interface IThreadData {
+  messages: { data: IMessage[] };
+  thread_status: {
+    outcome: ThreadOutcome;
+    done: boolean;
+    final_tc?: number;
+  };
+}
+export type IThreadDataResponse = IAPIResponse<IThreadData>;
+
+export interface ISendMessageRequest {
+  thread_id: string;
+  message: string;
+}
+
+export interface IWebMessage {
+  text: string;
+  isGpt: boolean;
 }

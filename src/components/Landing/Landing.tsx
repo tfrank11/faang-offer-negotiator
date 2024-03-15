@@ -1,11 +1,11 @@
-import { Button, Chip } from "@mui/material";
+import { Chip } from "@mui/material";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { animated } from "@react-spring/web";
 import { useCallback, useContext, useState } from "react";
 import { useFadeTransition } from "../../common/useFadeTransition";
 import { AppPage } from "../../common/types";
 import { useAuth } from "../../common/useAuth";
-import { generatePaymentLink } from "../../common/api";
+import { createThread, generatePaymentLink } from "../../common/api";
 import { LoadingButton } from "@mui/lab";
 import { AppContext, UserInfoContext } from "../../App";
 
@@ -15,18 +15,20 @@ const Landing = () => {
   const auth = useAuth();
   const userInfo = useContext(UserInfoContext);
   const tokens = userInfo?.tokens ?? 0;
+  const [insertTokenLoading, setInsertTokenLoading] = useState(false);
 
-  const onClickInsertToken = useCallback(() => {
+  const onClickInsertToken = useCallback(async () => {
     if (!auth.user) {
       return;
     }
-    // check if they have tokens
-    // remove 1 token
-    // start game
-    if (setPage) {
+    setInsertTokenLoading(true);
+    const response = await createThread(auth.user.uid);
+    setInsertTokenLoading(false);
+    if (response?.threadId) {
+      appContext?.setThreadId(response.threadId);
       setPage?.(AppPage.GAME);
     }
-  }, [auth.user, setPage]);
+  }, [appContext, auth.user, setPage]);
 
   const [isBuyTokensButtonLoading, setIsBuyTokensButtonLoading] =
     useState(false);
@@ -65,13 +67,14 @@ const Landing = () => {
           />
 
           <div className="mt-10 grid gap-2 w-fit mx-auto">
-            <Button
+            <LoadingButton
               variant="contained"
               onClick={onClickInsertToken}
+              loading={insertTokenLoading}
               disabled={tokens === 0}
             >
               Insert Token To Play
-            </Button>
+            </LoadingButton>
             {tokens === 0 && (
               <Chip
                 className="w-fit mx-auto"
