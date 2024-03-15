@@ -43,7 +43,9 @@ export const useThread = (): IUseThreadData => {
       setIsDone(response.thread_status.done);
       setFinalTC(response.thread_status.final_tc);
       const msgs = getMessagesFromApiData(response);
-      setMessages(msgs);
+      if (msgs.length !== messages.length) {
+        setMessages(msgs);
+      }
     }, 1000);
     return () => {
       clearInterval(intervalId.current);

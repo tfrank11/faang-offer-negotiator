@@ -6,8 +6,9 @@ import {
   Dialog,
   Typography,
 } from "@mui/material";
-import { ThreadOutcome } from "../../common/types";
-import { useMemo } from "react";
+import { AppPage, ThreadOutcome } from "../../common/types";
+import { useCallback, useContext, useMemo } from "react";
+import { AppContext } from "../../App";
 
 interface Props {
   isDone: boolean;
@@ -16,6 +17,12 @@ interface Props {
 }
 
 const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
+  const appContext = useContext(AppContext);
+
+  const onClickTryAgain = useCallback(() => {
+    appContext?.setPage(AppPage.LANDING);
+  }, [appContext]);
+
   const title = useMemo(() => {
     if (threadOutcome === ThreadOutcome.ACCEPTED) {
       return "Offer Accepted";
@@ -62,7 +69,12 @@ const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small">Share on X</Button>
+            <Button size="small" variant="contained" onClick={onClickTryAgain}>
+              Try Again
+            </Button>
+            <Button size="small" variant="outlined">
+              Share on X
+            </Button>
           </CardActions>
         </Card>
       </div>
