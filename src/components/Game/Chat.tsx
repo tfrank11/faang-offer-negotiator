@@ -30,18 +30,19 @@ const Chat: React.FC<Props> = ({ messages, sendMessage, isDone }) => {
     [sendMessage, text]
   );
 
-  const reversedMessages = useMemo(() => {
-    return messages.slice().reverse();
-  }, [messages]);
+  const reversedMessages = useMemo(
+    () => messages.slice().reverse(),
+    [messages]
+  );
 
   useEffect(() => {
     messageRef.current?.scrollIntoView();
   }, [reversedMessages]);
 
-  const messageRef = useRef<any>();
+  const messageRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <div className="h-[60vh] w-2/3 mx-auto rounded-2xl s:w-4/5 bg-gray-600 p-3">
+    <div className="h-[60vh] w-2/3 mx-auto rounded-2xl s:w-4/5 bg-gray-600 p-3 grid">
       <div
         className="h-[50vh] grid gap-2 auto-rows-min overflow-auto scroll-smooth"
         id="messages-list"
@@ -51,18 +52,16 @@ const Chat: React.FC<Props> = ({ messages, sendMessage, isDone }) => {
         })}
         <div ref={messageRef}></div>
       </div>
-      <form
-        className="w-2/3 absolute bottom-[35px] mx-auto pr-[55px] flex"
-        onSubmit={onSubmitMessage}
-      >
+      <form className="w-full h-[6vh] mx-auto flex" onSubmit={onSubmitMessage}>
         <TextField
           className="w-full rounded-md "
           value={text}
           onChange={onChangeTextInput}
           color="secondary"
           autoComplete="off"
+          disabled={isDone}
         />
-        <IconButton type="submit">
+        <IconButton type="submit" className="my-auto">
           <Send />
         </IconButton>
       </form>

@@ -39,9 +39,11 @@ export const useThread = (): IUseThreadData => {
       if (!threadId) return;
       const response = await getMessages(threadId);
       if (!response) return;
-      setThreadOutcome(response.thread_status.outcome);
-      setIsDone(response.thread_status.done);
-      setFinalTC(response.thread_status.final_tc);
+      setTimeout(() => {
+        setThreadOutcome(response.thread_status.outcome);
+        setIsDone(response.thread_status.done);
+        setFinalTC(response.thread_status.final_tc);
+      }, 1000);
       const msgs = getMessagesFromApiData(response);
       if (msgs.length !== messages.length) {
         setMessages(msgs);
