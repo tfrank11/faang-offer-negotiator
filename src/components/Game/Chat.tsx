@@ -11,6 +11,9 @@ interface Props {
 }
 
 const Chat: React.FC<Props> = ({ messages, sendMessage, isDone }) => {
+  const [optimisticLastMessage, setOptimisticLastMessage] = useState<
+    string | undefined
+  >(undefined);
   const [text, setText] = useState("");
 
   const onChangeTextInput = useCallback(
@@ -24,20 +27,31 @@ const Chat: React.FC<Props> = ({ messages, sendMessage, isDone }) => {
     (e: React.FormEvent) => {
       e.preventDefault();
       e.stopPropagation();
+      setOptimisticLastMessage(text);
       sendMessage(text);
       setText("");
     },
     [sendMessage, text]
   );
 
-  const reversedMessages = useMemo(
-    () => messages.slice().reverse(),
-    [messages]
-  );
+  useEffect(() => {
+    setOptimisticLastMessage(undefined);
+  }, [messages]);
+
+  const messagesForDisplay = useMemo(() => {
+    const result = messages.slice().reverse();
+    if (optimisticLastMessage) {
+      result.push({
+        text: optimisticLastMessage,
+        isGpt: false,
+      });
+    }
+    return result;
+  }, [messages, optimisticLastMessage]);
 
   useEffect(() => {
     messageRef.current?.scrollIntoView();
-  }, [reversedMessages]);
+  }, [messagesForDisplay]);
 
   const messageRef = useRef<HTMLDivElement | null>(null);
 
@@ -47,7 +61,7 @@ const Chat: React.FC<Props> = ({ messages, sendMessage, isDone }) => {
         className="h-[50vh] grid gap-2 auto-rows-min overflow-auto scroll-smooth"
         id="messages-list"
       >
-        {reversedMessages.map((e) => {
+        {messagesForDisplay.map((e) => {
           return <Message text={e.text} isGpt={e.isGpt} />;
         })}
         <div ref={messageRef}></div>
