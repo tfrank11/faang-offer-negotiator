@@ -1,5 +1,4 @@
 import React from "react";
-import useTypingEffect from "../../common/useTypingEffect";
 
 interface Props {
   text: string;
@@ -7,7 +6,7 @@ interface Props {
 }
 
 const GPTMessage: React.FC<{ text: string }> = ({ text }) => {
-  const { text: typingText } = useTypingEffect(text);
+  // const { text: typingText } = useTypingEffect(text);
   return (
     <div className="w-2/3 bg-gray-800 rounded-xl text-sm p-2 h-fit">
       <p className="whitespace-pre-line">{text}</p>

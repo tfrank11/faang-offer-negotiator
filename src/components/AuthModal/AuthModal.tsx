@@ -34,30 +34,13 @@ interface Props {
 }
 
 const AuthModal: React.FC<Props> = ({ isOpen, onClose }) => {
-  // MUI tabs code
   const handleChange = useCallback(
-    (event: React.SyntheticEvent, newValue: number) => {
+    (_event: React.SyntheticEvent, newValue: number) => {
       setValue(newValue);
     },
     []
   );
   const [value, setValue] = useState(0);
-
-  //   const login = (e: React.FormEvent) => {
-  //     e.preventDefault();
-  //     loginItems.signInWithEmailAndPassword(loginEmail, loginPassword);
-  //   };
-
-  //   const signup = (e: React.FormEvent) => {
-  //     e.preventDefault();
-  //     registerItems.createUserWithEmailAndPassword(signupEmail, signupPassword);
-  //   };
-
-  //   useEffect(() => {
-  //     if (!isNil(authItems.user)) {
-  //       handleClose();
-  //     }
-  //   }, [authItems.user, handleClose]);
 
   return (
     <div>
