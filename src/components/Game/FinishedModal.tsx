@@ -19,10 +19,10 @@ interface Props {
 
 function generateXMessage(threadOutcome: ThreadOutcome, finalTC: number) {
   if (threadOutcome === ThreadOutcome.ACCEPTED) {
-    return `I negotiated my TC up to ${finalTC / 1000}k against a GPT4 AI 🚀🚀`;
+    return `I negotiated my TC up to ${finalTC / 1000}k against GPT4 🚀🚀`;
   }
   if (threadOutcome === ThreadOutcome.RESCINDED) {
-    return `I botched my negotiation and had my offer rescinded against a GPT4 AI :(`;
+    return `I botched my negotiation and had my offer rescinded against GPT4 :(`;
   }
 }
 
@@ -62,8 +62,16 @@ const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
     return "You botched the negotiation and lost your offer 😔";
   }, [finalTC, threadOutcome]);
 
+  const canShare = useMemo(() => {
+    const validations = [
+      threadOutcome === ThreadOutcome.UNKNOWN,
+      threadOutcome === ThreadOutcome.ACCEPTED && isNil(finalTC),
+    ];
+    return !validations.includes(true);
+  }, [finalTC, threadOutcome]);
+
   const onClickShare = useCallback(() => {
-    if (threadOutcome === ThreadOutcome.UNKNOWN || isNil(finalTC)) return;
+    if (isNil(finalTC)) return;
     const url = location.origin;
     const text = generateXMessage(threadOutcome, finalTC);
     if (isNil(text)) return;
@@ -97,9 +105,11 @@ const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
             <Button size="small" variant="contained" onClick={onClickTryAgain}>
               Try Again
             </Button>
-            <Button size="small" variant="outlined" onClick={onClickShare}>
-              Share on X
-            </Button>
+            {canShare && (
+              <Button size="small" variant="outlined" onClick={onClickShare}>
+                Share on X
+              </Button>
+            )}
           </CardActions>
         </Card>
       </div>
