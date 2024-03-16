@@ -64,7 +64,7 @@ const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
 
   const onClickShare = useCallback(() => {
     if (threadOutcome === ThreadOutcome.UNKNOWN || isNil(finalTC)) return;
-    const url = location.href;
+    const url = location.origin;
     const text = generateXMessage(threadOutcome, finalTC);
     if (isNil(text)) return;
     window.open(
