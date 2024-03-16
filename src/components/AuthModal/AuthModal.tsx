@@ -1,4 +1,4 @@
-import { Box, Dialog, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Dialog, Tab, Tabs } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import Login from "./Login";
 import Signup from "./Signup";
@@ -21,7 +21,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <div>{children}</div>
         </Box>
       )}
     </div>
