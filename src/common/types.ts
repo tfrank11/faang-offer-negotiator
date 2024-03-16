@@ -70,4 +70,5 @@ export interface ISendMessageRequest {
 export interface IWebMessage {
   text: string;
   isGpt: boolean;
+  id: string;
 }

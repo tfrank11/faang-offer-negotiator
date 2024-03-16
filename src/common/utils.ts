@@ -8,6 +8,7 @@ export function getMessagesFromApiData(data: IThreadData) {
     const msg: IWebMessage = {
       text,
       isGpt: each.role === "assistant",
+      id: each.id,
     };
     result.push(msg);
   }

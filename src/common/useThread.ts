@@ -25,6 +25,12 @@ export const useThread = (): IUseThreadData => {
   const [messages, setMessages] = useState<IWebMessage[]>([]);
   const intervalId = useRef(0);
 
+  const messagesLengthRef = useRef(0);
+
+  useEffect(() => {
+    messagesLengthRef.current = messages.length;
+  }, [messages.length]);
+
   const sendMessage = useCallback(
     (msg: string) => {
       const uid = auth.user?.uid;
@@ -48,7 +54,7 @@ export const useThread = (): IUseThreadData => {
         setFinalTC(response.thread_status.final_tc);
       }, 1000);
       const msgs = getMessagesFromApiData(response);
-      if (msgs.length !== messages.length) {
+      if (msgs.length !== messagesLengthRef.current) {
         setMessages(msgs);
       }
     }, 1000);

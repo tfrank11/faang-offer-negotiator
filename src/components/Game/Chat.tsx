@@ -40,30 +40,42 @@ const Chat: React.FC<Props> = ({ messages, sendMessage, isDone }) => {
 
   const messagesForDisplay = useMemo(() => {
     const result = messages.slice().reverse();
-    if (optimisticLastMessage) {
-      result.push({
-        text: optimisticLastMessage,
-        isGpt: false,
-      });
-    }
     return result;
-  }, [messages, optimisticLastMessage]);
+  }, [messages]);
 
   useEffect(() => {
     messageRef.current?.scrollIntoView();
-  }, [messagesForDisplay]);
+  }, [messagesForDisplay, optimisticLastMessage]);
 
   const messageRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <div className="h-[60vh] w-2/3 mx-auto rounded-2xl s:w-4/5 bg-gray-600 p-3 grid">
       <div
-        className="h-[50vh] grid gap-2 auto-rows-min overflow-auto scroll-smooth"
+        className="h-[50vh] grid gap-2 auto-rows-min overflow-auto scroll-smooth no-scrollbar"
         id="messages-list"
       >
-        {messagesForDisplay.map((e) => {
-          return <Message text={e.text} isGpt={e.isGpt} />;
+        {messagesForDisplay?.map((e, i) => {
+          const isLastUserMessage =
+            !e.isGpt && i === messagesForDisplay.length - 1;
+          const isFirstUserMessage = !e.isGpt && i === 0;
+          return (
+            <Message
+              message={e}
+              key={e.id}
+              suppressAnimate={isLastUserMessage && !isFirstUserMessage}
+            />
+          );
         })}
+        {optimisticLastMessage && (
+          <Message
+            message={{
+              text: optimisticLastMessage,
+              id: "latest",
+              isGpt: false,
+            }}
+          />
+        )}
         <div ref={messageRef}></div>
       </div>
       <form className="w-full h-[6vh] mx-auto flex" onSubmit={onSubmitMessage}>

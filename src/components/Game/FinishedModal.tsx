@@ -17,8 +17,8 @@ interface Props {
   finalTC: number | undefined;
 }
 
-function generateXMessage(threadOutcome: ThreadOutcome, finalTC: number) {
-  if (threadOutcome === ThreadOutcome.ACCEPTED) {
+function generateXMessage(threadOutcome: ThreadOutcome, finalTC?: number) {
+  if (threadOutcome === ThreadOutcome.ACCEPTED && !isNil(finalTC)) {
     return `I negotiated my TC up to ${finalTC / 1000}k against GPT4 🚀🚀`;
   }
   if (threadOutcome === ThreadOutcome.RESCINDED) {
@@ -71,7 +71,6 @@ const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
   }, [finalTC, threadOutcome]);
 
   const onClickShare = useCallback(() => {
-    if (isNil(finalTC)) return;
     const url = location.origin;
     const text = generateXMessage(threadOutcome, finalTC);
     if (isNil(text)) return;
