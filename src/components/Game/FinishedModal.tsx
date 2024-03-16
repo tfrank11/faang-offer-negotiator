@@ -7,9 +7,9 @@ import {
   Typography,
 } from "@mui/material";
 import { AppPage, ThreadOutcome } from "../../common/types";
-import { useCallback, useContext, useMemo } from "react";
-import { AppContext } from "../../App";
+import { useCallback, useMemo } from "react";
 import { isNil } from "lodash";
+import { useAppInfo } from "../../providers/AppInfoProvider";
 
 interface Props {
   isDone: boolean;
@@ -27,7 +27,7 @@ function generateXMessage(threadOutcome: ThreadOutcome, finalTC: number) {
 }
 
 const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
-  const appContext = useContext(AppContext);
+  const appContext = useAppInfo();
 
   const onClickTryAgain = useCallback(() => {
     appContext?.setPage(AppPage.LANDING);

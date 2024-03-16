@@ -1,11 +1,11 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { AuthContext } from "../App";
+import { useCallback, useEffect, useState } from "react";
 import {
   User,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { useFirebaseAuth } from "../providers/AuthProvider";
 
 interface AuthResponse {
   success: boolean;
@@ -26,7 +26,7 @@ interface UseAuthData {
 }
 
 export const useAuth = (): UseAuthData => {
-  const auth = useContext(AuthContext);
+  const auth = useFirebaseAuth();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {

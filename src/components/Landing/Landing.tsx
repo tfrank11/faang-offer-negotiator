@@ -1,19 +1,20 @@
 import { Chip } from "@mui/material";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { animated } from "@react-spring/web";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useState } from "react";
 import { useFadeTransition } from "../../common/useFadeTransition";
 import { AppPage } from "../../common/types";
 import { useAuth } from "../../common/useAuth";
 import { createThread, generatePaymentLink } from "../../common/api";
 import { LoadingButton } from "@mui/lab";
-import { AppContext, UserInfoContext } from "../../App";
+import { useAppInfo } from "../../providers/AppInfoProvider";
+import { useUserInfo } from "../../providers/UserInfoProvider";
 
 const Landing = () => {
-  const appContext = useContext(AppContext);
+  const appContext = useAppInfo();
   const setPage = appContext?.setPage;
   const auth = useAuth();
-  const userInfo = useContext(UserInfoContext);
+  const userInfo = useUserInfo();
   const tokens = userInfo?.tokens ?? 0;
   const [insertTokenLoading, setInsertTokenLoading] = useState(false);
 

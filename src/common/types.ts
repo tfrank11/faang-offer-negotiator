@@ -15,6 +15,7 @@ export interface IUserInfo {
 }
 
 export interface IAppContext {
+  page: AppPage;
   setPage: (val: AppPage) => void;
   threadId: string;
   setThreadId: (val: string) => void;

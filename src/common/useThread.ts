@@ -1,9 +1,9 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { IWebMessage, ThreadOutcome } from "./types";
 import { getMessages, sendThreadMessage } from "./api";
 import { getMessagesFromApiData } from "./utils";
-import { AppContext } from "../App";
 import { useAuth } from "./useAuth";
+import { useAppInfo } from "../providers/AppInfoProvider";
 
 interface IUseThreadData {
   sendMessage: (message: string) => void;
@@ -14,7 +14,7 @@ interface IUseThreadData {
 }
 
 export const useThread = (): IUseThreadData => {
-  const appContext = useContext(AppContext);
+  const appContext = useAppInfo();
   const auth = useAuth();
   const threadId = appContext?.threadId;
   const [isDone, setIsDone] = useState(false);
