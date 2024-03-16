@@ -67,12 +67,14 @@ export async function getMessages(
 
 export async function sendThreadMessage(
   threadId: string,
-  message: string
+  message: string,
+  uid: string
 ): Promise<IThreadData | null> {
   const url = API_HOST + "/send_message";
   const request: ISendMessageRequest = {
     thread_id: threadId,
     message,
+    uid,
   };
   const body = JSON.stringify(request);
   try {

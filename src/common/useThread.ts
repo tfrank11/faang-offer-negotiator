@@ -3,6 +3,7 @@ import { IWebMessage, ThreadOutcome } from "./types";
 import { getMessages, sendThreadMessage } from "./api";
 import { getMessagesFromApiData } from "./utils";
 import { AppContext } from "../App";
+import { useAuth } from "./useAuth";
 
 interface IUseThreadData {
   sendMessage: (message: string) => void;
@@ -14,6 +15,7 @@ interface IUseThreadData {
 
 export const useThread = (): IUseThreadData => {
   const appContext = useContext(AppContext);
+  const auth = useAuth();
   const threadId = appContext?.threadId;
   const [isDone, setIsDone] = useState(false);
   const [threadOutcome, setThreadOutcome] = useState<ThreadOutcome>(
@@ -25,10 +27,11 @@ export const useThread = (): IUseThreadData => {
 
   const sendMessage = useCallback(
     (msg: string) => {
-      if (!threadId) return;
-      sendThreadMessage(threadId, msg);
+      const uid = auth.user?.uid;
+      if (!threadId || !uid) return;
+      sendThreadMessage(threadId, msg, uid);
     },
-    [threadId]
+    [auth.user?.uid, threadId]
   );
 
   useEffect(() => {

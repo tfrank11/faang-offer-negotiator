@@ -63,6 +63,7 @@ export type IThreadDataResponse = IAPIResponse<IThreadData>;
 export interface ISendMessageRequest {
   thread_id: string;
   message: string;
+  uid: string;
 }
 
 export interface IWebMessage {
