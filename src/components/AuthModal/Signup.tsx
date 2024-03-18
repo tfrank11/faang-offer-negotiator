@@ -53,12 +53,11 @@ const Signup: React.FC<Props> = ({ onClose }) => {
   return (
     <form onSubmit={onSubmitSignup}>
       <DialogTitle>Create a new account.</DialogTitle>
-      <DialogContent className="w-[500px]">
+      <DialogContent className="w-[75vw] md:w-[500px] lg:w-[500px] xl:w-[500px] 2xl:w-[500px] grid">
         <TextField
           margin="dense"
           label="Email Address"
           type="email"
-          fullWidth
           variant="standard"
           disabled={isLoading}
           value={email}
@@ -68,7 +67,6 @@ const Signup: React.FC<Props> = ({ onClose }) => {
           margin="dense"
           label="Password"
           type="password"
-          fullWidth
           variant="standard"
           disabled={isLoading}
           value={password}
@@ -80,7 +78,6 @@ const Signup: React.FC<Props> = ({ onClose }) => {
           margin="dense"
           label="Confirm Password"
           type="password"
-          fullWidth
           variant="standard"
           disabled={isLoading}
           value={confirmPassword}

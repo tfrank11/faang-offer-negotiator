@@ -51,12 +51,11 @@ const Login: React.FC<Props> = ({ onClose }) => {
   return (
     <form onSubmit={onSubmitLogin}>
       <DialogTitle>Login to your account.</DialogTitle>
-      <DialogContent className="w-[500px]">
+      <DialogContent className="w-[75vw] md:w-[500px] lg:w-[500px] xl:w-[500px] 2xl:w-[500px] grid">
         <TextField
           margin="dense"
           label="Email Address"
           type="email"
-          fullWidth
           variant="standard"
           value={email}
           disabled={isLoading}
@@ -66,7 +65,6 @@ const Login: React.FC<Props> = ({ onClose }) => {
           margin="dense"
           label="Password"
           type="password"
-          fullWidth
           variant="standard"
           value={password}
           disabled={isLoading}
