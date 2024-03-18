@@ -44,7 +44,7 @@ const Landing = () => {
     (async () => {
       const paymentLink = await generatePaymentLink(uid);
       if (paymentLink) {
-        window.open(paymentLink, "_blank")?.focus();
+        location.href = paymentLink;
       }
       setIsBuyTokensButtonLoading(false);
     })();
