@@ -7,7 +7,9 @@ import {
 } from "./types";
 
 const API_HOST =
-  import.meta.env.MODE === "development" ? "http://localhost:8000" : "tbd";
+  import.meta.env.MODE === "development"
+    ? "http://localhost:8000"
+    : "https://faang-api-b6b090a1218d.herokuapp.com";
 
 export async function generatePaymentLink(uid: string): Promise<string | null> {
   const url = API_HOST + "/generate_payment_link";
