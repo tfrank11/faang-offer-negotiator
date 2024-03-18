@@ -13,7 +13,7 @@ const GPTMessage: React.FC<{ text: string }> = ({ text }) => {
   return (
     <animated.div style={fade}>
       <animated.div style={slide}>
-        <div className="w-2/3 bg-gray-800 rounded-xl text-sm p-2 h-fit">
+        <div className="w-2/3 bg-gray-800 rounded-xl text-sm p-2 h-fit shadow-sharp">
           <p className="whitespace-pre-line">{text}</p>
         </div>
       </animated.div>
@@ -28,7 +28,7 @@ const UserMessage: React.FC<{ text: string; suppressAnimate?: boolean }> = ({
   const { fade, slide } = useMessageFadeInTransition("right");
 
   const Message = (
-    <div className="w-2/3 bg-blue-600 rounded-xl text-sm p-2 h-fit mr-0 ml-auto">
+    <div className="w-2/3 bg-blue-600 rounded-xl text-sm p-2 h-fit mr-2 ml-auto shadow-sharp">
       <p className="whitespace-pre-line">{text}</p>
     </div>
   );

@@ -50,7 +50,7 @@ const Chat: React.FC<Props> = ({ messages, sendMessage, isDone }) => {
   const messageRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <div className="h-[60vh] w-full md:w-2/3 lg:w-2/3 xl:w-2/3 2xl:1/2 mx-auto rounded-2xl bg-gray-600 p-3 grid">
+    <div className="h-[60vh] w-full md:w-2/3 lg:w-2/3 xl:w-2/3 2xl:1/2 mx-auto rounded-2xl bg-gray-600 p-3 pr-1 grid">
       <div
         className="h-[50vh] grid gap-2 auto-rows-min overflow-auto scroll-smooth no-scrollbar"
         id="messages-list"
