@@ -8,13 +8,14 @@ import {
   TextField,
 } from "@mui/material";
 import { useAuth } from "../../common/useAuth";
+import { Google } from "@mui/icons-material";
 
 interface Props {
   onClose: () => void;
 }
 
 const Login: React.FC<Props> = ({ onClose }) => {
-  const { user, login } = useAuth();
+  const { user, login, loginWithGoogle } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -73,6 +74,14 @@ const Login: React.FC<Props> = ({ onClose }) => {
         <div className="absolute text-red-600 text-xs mt-4">{error}</div>
       </DialogContent>
       <div className="absolute right-10 bottom-8">
+        <Button
+          startIcon={<Google />}
+          variant="contained"
+          className="relative right-2 bottom-2"
+          onClick={loginWithGoogle}
+        >
+          Login With Google
+        </Button>
         <DialogActions>
           <Button onClick={onClose} disabled={isLoading}>
             Cancel
