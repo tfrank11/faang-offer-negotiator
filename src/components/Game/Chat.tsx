@@ -1,8 +1,9 @@
-import { IWebMessage } from "../../common/types";
+import { AppPage, IWebMessage } from "../../common/types";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Message from "./Message";
-import { IconButton, TextField } from "@mui/material";
+import { Button, IconButton, TextField } from "@mui/material";
 import { Send } from "@mui/icons-material";
+import { useAppInfo } from "../../providers/AppInfoProvider";
 
 interface Props {
   messages: IWebMessage[];
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const Chat: React.FC<Props> = ({ messages, sendMessage, isDone }) => {
+  const appContext = useAppInfo();
   const [optimisticLastMessage, setOptimisticLastMessage] = useState<
     string | undefined
   >(undefined);
@@ -27,11 +29,14 @@ const Chat: React.FC<Props> = ({ messages, sendMessage, isDone }) => {
     (e: React.FormEvent) => {
       e.preventDefault();
       e.stopPropagation();
+      if (isDone) {
+        return;
+      }
       setOptimisticLastMessage(text);
       sendMessage(text);
       setText("");
     },
-    [sendMessage, text]
+    [isDone, sendMessage, text]
   );
 
   useEffect(() => {
@@ -48,6 +53,10 @@ const Chat: React.FC<Props> = ({ messages, sendMessage, isDone }) => {
   }, [messagesForDisplay, optimisticLastMessage]);
 
   const messageRef = useRef<HTMLDivElement | null>(null);
+
+  const onClickTryAgain = useCallback(() => {
+    appContext?.setPage(AppPage.LANDING);
+  }, [appContext]);
 
   return (
     <div className="h-[60vh] w-full md:w-2/3 lg:w-2/3 xl:w-2/3 2xl:1/2 mx-auto rounded-2xl bg-gray-600 p-3 pr-1 grid">
@@ -78,19 +87,32 @@ const Chat: React.FC<Props> = ({ messages, sendMessage, isDone }) => {
         )}
         <div ref={messageRef}></div>
       </div>
-      <form className="w-full h-[6vh] mx-auto flex" onSubmit={onSubmitMessage}>
-        <TextField
-          className="w-full rounded-md "
-          value={text}
-          onChange={onChangeTextInput}
-          color="secondary"
-          autoComplete="off"
-          disabled={isDone}
-        />
-        <IconButton type="submit" className="my-auto">
-          <Send />
-        </IconButton>
-      </form>
+      {isDone ? (
+        <Button
+          variant="contained"
+          className="w-fit !mx-auto"
+          onClick={onClickTryAgain}
+        >
+          Try again
+        </Button>
+      ) : (
+        <form
+          className="w-full h-[6vh] mx-auto flex"
+          onSubmit={onSubmitMessage}
+        >
+          <TextField
+            className="w-full rounded-md "
+            value={text}
+            onChange={onChangeTextInput}
+            color="secondary"
+            autoComplete="off"
+            disabled={isDone}
+          />
+          <IconButton type="submit" className="my-auto" disabled={isDone}>
+            <Send />
+          </IconButton>
+        </form>
+      )}
     </div>
   );
 };

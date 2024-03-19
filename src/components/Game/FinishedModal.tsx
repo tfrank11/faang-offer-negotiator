@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { AppPage, ThreadOutcome } from "../../common/types";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { isNil } from "lodash";
 import { useAppInfo } from "../../providers/AppInfoProvider";
 
@@ -27,7 +27,12 @@ function generateXMessage(threadOutcome: ThreadOutcome, finalTC?: number) {
 }
 
 const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const appContext = useAppInfo();
+
+  useEffect(() => {
+    setIsOpen(isDone);
+  }, [isDone]);
 
   const onClickTryAgain = useCallback(() => {
     appContext?.setPage(AppPage.LANDING);
@@ -84,8 +89,12 @@ const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
     );
   }, [finalTC, threadOutcome]);
 
+  const onCloseHandler = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
   return (
-    <Dialog open={isDone}>
+    <Dialog open={isOpen} onClose={onCloseHandler}>
       <div>
         <Card sx={{ minWidth: 275 }}>
           <CardContent>
@@ -109,6 +118,11 @@ const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
                 Share on X
               </Button>
             )}
+            <div className="!ml-auto !mr-0">
+              <Button size="small" variant="outlined" onClick={onCloseHandler}>
+                Close
+              </Button>
+            </div>
           </CardActions>
         </Card>
       </div>
