@@ -33,8 +33,12 @@ const Landing = () => {
 
   const [isBuyTokensButtonLoading, setIsBuyTokensButtonLoading] =
     useState(false);
-  const isBuyTokensButtonDisabled = !auth.user || isBuyTokensButtonLoading;
+  const isBuyButtonALoginButton = !auth.user || isBuyTokensButtonLoading;
   const onClickBuyMoreTokens = useCallback(() => {
+    if (isBuyButtonALoginButton) {
+      appContext?.setIsAuthModalOpen(true);
+      return;
+    }
     const uid = auth.user?.uid;
     if (!uid) {
       return;
@@ -48,7 +52,7 @@ const Landing = () => {
       }
       setIsBuyTokensButtonLoading(false);
     })();
-  }, [auth.user]);
+  }, [appContext, auth.user?.uid, isBuyButtonALoginButton]);
 
   const { fade, slide } = useFadeTransition();
 
@@ -90,7 +94,6 @@ const Landing = () => {
                 onClick={onClickBuyMoreTokens}
                 variant={tokens > 0 ? "outlined" : "contained"}
                 color="success"
-                disabled={isBuyTokensButtonDisabled}
                 loading={isBuyTokensButtonLoading}
               >
                 Buy More

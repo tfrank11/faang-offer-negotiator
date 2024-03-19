@@ -1,7 +1,8 @@
 import { Box, Dialog, Tab, Tabs } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Login from "./Login";
 import Signup from "./Signup";
+import { useAppInfo } from "../../providers/AppInfoProvider";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -28,12 +29,15 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-interface Props {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const AuthModal: React.FC<Props> = ({ isOpen, onClose }) => {
+const AuthModal: React.FC = () => {
+  const appContext = useAppInfo();
+  const isOpen = useMemo(
+    () => appContext?.isAuthModalOpen ?? false,
+    [appContext?.isAuthModalOpen]
+  );
+  const onClose = useCallback(() => {
+    appContext?.setIsAuthModalOpen(false);
+  }, [appContext]);
   const handleChange = useCallback(
     (_event: React.SyntheticEvent, newValue: number) => {
       setValue(newValue);

@@ -12,17 +12,13 @@ interface Props {
   children: React.ReactNode;
 }
 
-// export interface IAppContext {
-//     setPage: (val: AppPage) => void;
-//     threadId: string;
-//     setThreadId: (val: s
-
 const AppInfoContext = createContext<IAppContext | undefined>(undefined);
 
 const AppInfoProvider: React.FC<Props> = ({ children }) => {
   const auth = useAuth();
   const [page, setPage] = useState(AppPage.LANDING);
   const [threadId, setThreadId] = useState("");
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
     if (!auth.user) {
@@ -36,8 +32,10 @@ const AppInfoProvider: React.FC<Props> = ({ children }) => {
       setPage,
       threadId,
       setThreadId,
+      isAuthModalOpen,
+      setIsAuthModalOpen,
     };
-  }, [page, threadId]);
+  }, [isAuthModalOpen, page, threadId]);
 
   return (
     <AppInfoContext.Provider value={appInfo}>

@@ -19,6 +19,8 @@ export interface IAppContext {
   setPage: (val: AppPage) => void;
   threadId: string;
   setThreadId: (val: string) => void;
+  setIsAuthModalOpen: (val: boolean) => void;
+  isAuthModalOpen: boolean;
 }
 
 interface IMessage {
