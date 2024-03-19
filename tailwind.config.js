@@ -11,6 +11,7 @@ export default {
     },
     fontFamily: {
       roboto: ["Roboto", "sans-serif"],
+      vt323: ["VT323", "Roboto", "sans-serif"],
     },
   },
   plugins: [],

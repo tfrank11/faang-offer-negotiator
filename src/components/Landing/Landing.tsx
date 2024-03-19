@@ -9,6 +9,7 @@ import { createThread, generatePaymentLink } from "../../common/api";
 import { LoadingButton } from "@mui/lab";
 import { useAppInfo } from "../../providers/AppInfoProvider";
 import { useUserInfo } from "../../providers/UserInfoProvider";
+import ScrollingBanner from "./ScrollingBanner";
 
 const Landing = () => {
   const appContext = useAppInfo();
@@ -58,7 +59,7 @@ const Landing = () => {
 
   return (
     <animated.div style={slide}>
-      <animated.div style={fade}>
+      <animated.div style={fade} className="grid gap-10">
         <div className="w-full text-center">
           <h1 className="font-roboto text-[40px] mt-10 font-semibold text-purple-500">
             GPT4 FAANG Offer Negotiation
@@ -101,6 +102,7 @@ const Landing = () => {
             </div>
           </div>
         </div>
+        <ScrollingBanner />
       </animated.div>
     </animated.div>
   );
