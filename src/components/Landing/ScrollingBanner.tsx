@@ -8,11 +8,11 @@ function numberWithCommas(num: number): string {
 const ScrollingBanner = () => {
   const scores = [
     { name: "Fred", score: 298000 },
-    { name: "Eth", score: 193000 },
+    { name: "lunchballmvp", score: 281000 },
     { name: "KMoney", score: 250000 },
     { name: "Yolo", score: 198000 },
+    { name: "Eth", score: 193000 },
     { name: "yash", score: 190000 },
-    { name: "lunchballmvp", score: 281000 },
     { name: "haz", score: 184000 },
   ];
 
