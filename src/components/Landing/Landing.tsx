@@ -62,10 +62,10 @@ const Landing = () => {
       <animated.div style={fade} className="grid gap-10">
         <div className="w-full text-center">
           <h1 className="font-roboto text-[40px] mt-10 font-semibold text-purple-500">
-            GPT4 FAANG Offer Negotiation
+            GPT4 Offer Negotiation
           </h1>
           <h3 className="italic text-[20px]">
-            🚀How high can you negotiate your TC?🚀
+            🚀How high can you negotiate your comp?🚀
           </h3>
           <img
             src="hr-manager-skills.jpg"
