@@ -1,5 +1,3 @@
-import { Chip } from "@mui/material";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { animated } from "@react-spring/web";
 import { useCallback, useState } from "react";
 import { useFadeTransition } from "../../common/useFadeTransition";
@@ -73,22 +71,17 @@ const Landing = () => {
           />
 
           <div className="mt-10 grid gap-2 w-fit mx-auto">
-            <LoadingButton
-              variant="contained"
-              onClick={onClickInsertToken}
-              loading={insertTokenLoading}
-              disabled={tokens === 0}
-            >
-              Insert Token To Play
-            </LoadingButton>
-            {tokens === 0 && (
-              <Chip
-                className="w-fit mx-auto"
-                label="No tokens!"
-                icon={<WarningAmberIcon />}
-                color="error"
-              />
+            {tokens > 0 && (
+              <LoadingButton
+                variant="contained"
+                onClick={onClickInsertToken}
+                loading={insertTokenLoading}
+                disabled={tokens === 0}
+              >
+                Insert Token To Play
+              </LoadingButton>
             )}
+
             <div>
               <LoadingButton
                 className="w-fit mx-auto"
@@ -97,7 +90,7 @@ const Landing = () => {
                 color="success"
                 loading={isBuyTokensButtonLoading}
               >
-                Buy More
+                GET Tokens
               </LoadingButton>
             </div>
           </div>
