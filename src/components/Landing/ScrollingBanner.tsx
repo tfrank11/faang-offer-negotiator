@@ -9,9 +9,9 @@ const ScrollingBanner = () => {
   const scores = [
     { name: "👑Bezosboy", score: 163000000 },
     { name: "Bezosboy", score: 350000 },
-    { name: "Adam", score: 250000 },
     { name: "Fred", score: 298000 },
     { name: "lunchballmvp", score: 281000 },
+    { name: "Adam", score: 250000 },
     { name: "KMoney", score: 250000 },
     { name: "Yolo", score: 198000 },
     { name: "Eth", score: 193000 },
