@@ -66,7 +66,7 @@ const Landing = () => {
           </h3>
           <img
             src="hr-manager-skills.jpg"
-            className="w-1/2 max-w-96 mx-auto my-2 shadow-special-pink rounded-lg"
+            className="w-1/3 max-w-96 min-w-64 mx-auto my-2 shadow-special-pink rounded-lg"
           />
 
           <div className="mt-10 grid gap-2 w-fit mx-auto">
