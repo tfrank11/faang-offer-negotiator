@@ -6,10 +6,10 @@ import {
   Dialog,
   Typography,
 } from "@mui/material";
-import { AppPage, ThreadOutcome } from "../../common/types";
+import { ThreadOutcome } from "../../common/types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { isNil } from "lodash";
-import { useAppInfo } from "../../providers/AppInfoProvider";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   isDone: boolean;
@@ -27,16 +27,16 @@ function generateXMessage(threadOutcome: ThreadOutcome, finalTC?: number) {
 }
 
 const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const appContext = useAppInfo();
 
   useEffect(() => {
     setIsOpen(isDone);
   }, [isDone]);
 
   const onClickTryAgain = useCallback(() => {
-    appContext?.setPage(AppPage.LANDING);
-  }, [appContext]);
+    navigate("/");
+  }, [navigate]);
 
   const title = useMemo(() => {
     if (threadOutcome === ThreadOutcome.ACCEPTED) {

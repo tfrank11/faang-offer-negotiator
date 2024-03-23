@@ -1,9 +1,9 @@
-import { AppPage, IWebMessage } from "../../common/types";
+import { IWebMessage } from "../../common/types";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Message from "./Message";
 import { Button, IconButton, TextField } from "@mui/material";
 import { Send } from "@mui/icons-material";
-import { useAppInfo } from "../../providers/AppInfoProvider";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   messages: IWebMessage[];
@@ -12,11 +12,11 @@ interface Props {
 }
 
 const Chat: React.FC<Props> = ({ messages, sendMessage, isDone }) => {
-  const appContext = useAppInfo();
   const [optimisticLastMessage, setOptimisticLastMessage] = useState<
     string | undefined
   >(undefined);
   const [text, setText] = useState("");
+  const navigate = useNavigate();
 
   const onChangeTextInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,8 +55,8 @@ const Chat: React.FC<Props> = ({ messages, sendMessage, isDone }) => {
   const messageRef = useRef<HTMLDivElement | null>(null);
 
   const onClickTryAgain = useCallback(() => {
-    appContext?.setPage(AppPage.LANDING);
-  }, [appContext]);
+    navigate("/");
+  }, [navigate]);
 
   return (
     <div className="h-[60vh] w-full md:w-2/3 lg:w-2/3 xl:w-2/3 2xl:1/2 mx-auto rounded-2xl bg-gray-600 p-3 pr-1 grid border-2 border-gray-500">

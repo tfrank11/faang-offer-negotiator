@@ -1,16 +1,28 @@
-import { useAppInfo } from "../providers/AppInfoProvider";
-import { AppPage } from "../common/types";
 import Landing from "./Landing/Landing";
 import Game from "./Game/Game";
 import Navbar from "./Navbar";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Landing />,
+  },
+  {
+    path: "/game/:threadId",
+    element: <Game />,
+  },
+  {
+    path: "*",
+    element: <Landing />,
+  },
+]);
 
 const AppBody = () => {
-  const appInfo = useAppInfo();
   return (
     <div className="h-screen w-screen bg-black">
       <Navbar />
-      {appInfo?.page === AppPage.LANDING && <Landing />}
-      {appInfo?.page === AppPage.GAME && <Game />}
+      <RouterProvider router={router} />
     </div>
   );
 };

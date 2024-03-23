@@ -3,7 +3,7 @@ import { IWebMessage, ThreadOutcome } from "./types";
 import { getMessages, sendThreadMessage } from "./api";
 import { getMessagesFromApiData } from "./utils";
 import { useAuth } from "./useAuth";
-import { useAppInfo } from "../providers/AppInfoProvider";
+import { useThreadId } from "./useThreadId";
 
 interface IUseThreadData {
   sendMessage: (message: string) => void;
@@ -14,9 +14,8 @@ interface IUseThreadData {
 }
 
 export const useThread = (): IUseThreadData => {
-  const appContext = useAppInfo();
   const auth = useAuth();
-  const threadId = appContext?.threadId;
+  const { threadId } = useThreadId();
   const [isDone, setIsDone] = useState(false);
   const [threadOutcome, setThreadOutcome] = useState<ThreadOutcome>(
     ThreadOutcome.UNKNOWN
@@ -42,7 +41,7 @@ export const useThread = (): IUseThreadData => {
 
   useEffect(() => {
     intervalId.current = window.setInterval(async () => {
-      if (isDone) {
+      if (isDone || !auth.user?.uid) {
         return;
       }
       if (!threadId) return;
@@ -61,7 +60,7 @@ export const useThread = (): IUseThreadData => {
     return () => {
       clearInterval(intervalId.current);
     };
-  }, [isDone, threadId]);
+  }, [auth.user?.uid, isDone, threadId]);
 
   return {
     sendMessage,
