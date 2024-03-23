@@ -1,12 +1,5 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { AppPage, IAppContext } from "../common/types";
-import { useAuth } from "../common/useAuth";
+import React, { createContext, useContext, useMemo, useState } from "react";
+import { IAppContext } from "../common/types";
 
 interface Props {
   children: React.ReactNode;
@@ -15,27 +8,14 @@ interface Props {
 const AppInfoContext = createContext<IAppContext | undefined>(undefined);
 
 const AppInfoProvider: React.FC<Props> = ({ children }) => {
-  const auth = useAuth();
-  const [page, setPage] = useState(AppPage.LANDING);
-  const [threadId, setThreadId] = useState("");
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (!auth.user) {
-      setPage(AppPage.LANDING);
-    }
-  }, [auth.user]);
 
   const appInfo = useMemo(() => {
     return {
-      page,
-      setPage,
-      threadId,
-      setThreadId,
       isAuthModalOpen,
       setIsAuthModalOpen,
     };
-  }, [isAuthModalOpen, page, threadId]);
+  }, [isAuthModalOpen]);
 
   return (
     <AppInfoContext.Provider value={appInfo}>

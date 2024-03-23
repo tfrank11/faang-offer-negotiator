@@ -1,20 +1,20 @@
 import { animated } from "@react-spring/web";
 import { useCallback, useState } from "react";
 import { useFadeTransition } from "../../common/useFadeTransition";
-import { AppPage } from "../../common/types";
 import { useAuth } from "../../common/useAuth";
 import { createThread, generatePaymentLink } from "../../common/api";
 import { LoadingButton } from "@mui/lab";
 import { useAppInfo } from "../../providers/AppInfoProvider";
 import { useUserInfo } from "../../providers/UserInfoProvider";
 import ScrollingBanner from "./ScrollingBanner";
+import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
   const appContext = useAppInfo();
-  const setPage = appContext?.setPage;
   const auth = useAuth();
   const userInfo = useUserInfo();
   const tokens = userInfo?.tokens ?? 0;
+  const navigate = useNavigate();
   const [insertTokenLoading, setInsertTokenLoading] = useState(false);
 
   const onClickInsertToken = useCallback(async () => {
@@ -25,10 +25,9 @@ const Landing = () => {
     const response = await createThread(auth.user.uid);
     setInsertTokenLoading(false);
     if (response?.threadId) {
-      appContext?.setThreadId(response.threadId);
-      setPage?.(AppPage.GAME);
+      navigate(`/game/${response.threadId}`);
     }
-  }, [appContext, auth.user, setPage]);
+  }, [auth.user, navigate]);
 
   const [isBuyTokensButtonLoading, setIsBuyTokensButtonLoading] =
     useState(false);
