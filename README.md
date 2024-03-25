@@ -1,6 +1,6 @@
 # FAANG Offer Negotiator
 
-[Live Site](https://faang-negotiatior.web.app/)
+[Live Site](https://www.salary-gpt.com/)
 
 ![website](https://i.imgur.com/Vp1VrRP.png)
 
@@ -22,4 +22,3 @@ This is the frontend for the GPT4 FAANG Offer Negotiator site.
 yarn install
 yarn dev
 ```
-
