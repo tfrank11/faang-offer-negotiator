@@ -4,7 +4,11 @@ import Message from "../Game/Message";
 import { IconButton, TextField } from "@mui/material";
 import { Send } from "@mui/icons-material";
 
-const DemoChat = () => {
+interface Props {
+  hideMessageForm?: boolean;
+}
+
+const DemoChat: React.FC<Props> = ({ hideMessageForm }) => {
   const [messages, setMessages] = useState<IWebMessage[]>([
     {
       text: "What's the comp for my offer?",
@@ -38,25 +42,29 @@ const DemoChat = () => {
   return (
     <div className="h-[40vh] w-full md:w-2/3 lg:w-2/3 xl:w-2/3 2xl:1/2 mx-auto rounded-2xl bg-gray-600 p-3 pr-1 grid border-2 border-gray-500 my-5">
       <div
-        className=" h-[30vh] grid gap-2 auto-rows-min overflow-auto scroll-smooth no-scrollbar"
+        className={`grid gap-2 auto-rows-min overflow-auto scroll-smooth no-scrollbar ${
+          hideMessageForm ? "h-[37vh]" : "h-[30vh]"
+        }`}
         id="messages-list"
       >
         {messages.map((e) => {
           return <Message message={e} key={e.id} />;
         })}
       </div>
-      <div className="w-full h-[6vh] mx-auto flex">
-        <TextField
-          value={"You have 0 tokens... get more to play!"}
-          disabled
-          className="w-full rounded-md "
-          color="secondary"
-          autoComplete="off"
-        />
-        <IconButton type="submit" className="my-auto" disabled>
-          <Send />
-        </IconButton>
-      </div>
+      {!hideMessageForm && (
+        <div className="w-full h-[6vh] mx-auto flex">
+          <TextField
+            value={"You have 0 tokens... get more to play!"}
+            disabled
+            className="w-full rounded-md "
+            color="secondary"
+            autoComplete="off"
+          />
+          <IconButton type="submit" className="my-auto" disabled>
+            <Send />
+          </IconButton>
+        </div>
+      )}
     </div>
   );
 };

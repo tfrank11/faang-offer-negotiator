@@ -68,15 +68,7 @@ const Landing = () => {
               Your goal is to negotiate the comp as high as possible
             </li>
           </ul>
-          {tokens > 0 ? (
-            <img
-              src="hr-manager-skills.jpg"
-              className="w-1/3 max-w-96 min-w-64 mx-auto shadow-special-pink rounded-lg my-5"
-            />
-          ) : (
-            <DemoChat />
-          )}
-
+          <DemoChat hideMessageForm={tokens > 0} />
           <div className="mt-10 grid gap-2 w-fit mx-auto text-center">
             {tokens > 0 && (
               <LoadingButton
