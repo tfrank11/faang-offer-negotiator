@@ -8,6 +8,7 @@ import { useAppInfo } from "../../providers/AppInfoProvider";
 import { useUserInfo } from "../../providers/UserInfoProvider";
 import ScrollingBanner from "./ScrollingBanner";
 import { useNavigate } from "react-router-dom";
+import DemoChat from "./DemoChat";
 
 const Landing = () => {
   const appContext = useAppInfo();
@@ -57,22 +58,26 @@ const Landing = () => {
   return (
     <animated.div style={slide}>
       <animated.div style={fade} className="grid gap-10">
-        <div className="w-full text-center">
-          <h1 className="font-roboto text-[40px] mt-10 font-semibold text-purple-500">
+        <div className="w-full">
+          <h1 className="font-roboto text-[40px] mt-10 font-semibold text-purple-500 text-center">
             GPT4 Offer Negotiation
           </h1>
-          <ul className="w-fit mx-auto list-carrot text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg 2xl:text-lg text-green-500">
+          <ul className="text-center w-fit mx-auto list-carrot text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg 2xl:text-lg text-green-500">
             <li>You have a job offer including base, bonus, and RSUs</li>
             <li className="pl-2">
               Your goal is to negotiate the comp as high as possible
             </li>
           </ul>
-          <img
-            src="hr-manager-skills.jpg"
-            className="w-1/3 max-w-96 min-w-64 mx-auto shadow-special-pink rounded-lg my-5"
-          />
+          {tokens > 0 ? (
+            <img
+              src="hr-manager-skills.jpg"
+              className="w-1/3 max-w-96 min-w-64 mx-auto shadow-special-pink rounded-lg my-5"
+            />
+          ) : (
+            <DemoChat />
+          )}
 
-          <div className="mt-10 grid gap-2 w-fit mx-auto">
+          <div className="mt-10 grid gap-2 w-fit mx-auto text-center">
             {tokens > 0 && (
               <LoadingButton
                 variant="contained"
