@@ -1,20 +1,15 @@
-import Landing from "./Landing/Landing";
-import Game from "./Game/Game";
+import Home from "./Home/Home";
 import Navbar from "./Navbar";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Landing />,
-  },
-  {
-    path: "/game/:threadId",
-    element: <Game />,
+    path: "/:threadId",
+    element: <Home />,
   },
   {
     path: "*",
-    element: <Landing />,
+    element: <Home />,
   },
 ]);
 

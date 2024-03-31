@@ -1,30 +1,30 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { IWebMessage, ThreadOutcome } from "./types";
-import { getMessages, sendThreadMessage } from "./api";
+import { IWebMessage } from "./types";
+import { getMessages, sendThreadDemoMessage, sendThreadMessage } from "./api";
 import { getMessagesFromApiData } from "./utils";
 import { useAuth } from "./useAuth";
-import { useThreadId } from "./useThreadId";
+import { useThreadInfo } from "./useThreadInfo";
+import { useStartThread } from "./useStartThread";
 
-interface IUseThreadData {
-  sendMessage: (message: string) => void;
-  messages: IWebMessage[];
-  isDone: boolean;
-  threadOutcome: ThreadOutcome;
-  finalTC?: number;
-}
-
-export const useThread = (): IUseThreadData => {
+export const useThread = () => {
   const auth = useAuth();
-  const { threadId } = useThreadId();
-  const [isDone, setIsDone] = useState(false);
-  const [threadOutcome, setThreadOutcome] = useState<ThreadOutcome>(
-    ThreadOutcome.UNKNOWN
-  );
-  const [finalTC, setFinalTC] = useState<number | undefined>();
+  const { threadId, isDemoDone, isDisabled, isUnlocked } = useThreadInfo();
+  const { startThread } = useStartThread();
   const [messages, setMessages] = useState<IWebMessage[]>([]);
   const intervalId = useRef(0);
 
   const messagesLengthRef = useRef(0);
+  const prevThreadId = useRef("");
+
+  useEffect(() => {
+    if (!threadId) {
+      startThread();
+    } else if (!prevThreadId.current) {
+      prevThreadId.current = threadId;
+    } else if (prevThreadId.current !== threadId) {
+      setMessages([]);
+    }
+  }, [startThread, threadId]);
 
   useEffect(() => {
     messagesLengthRef.current = messages.length;
@@ -33,25 +33,20 @@ export const useThread = (): IUseThreadData => {
   const sendMessage = useCallback(
     (msg: string) => {
       const uid = auth.user?.uid;
-      if (!threadId || !uid) return;
-      sendThreadMessage(threadId, msg, uid);
+      if (!!uid && isUnlocked && threadId) {
+        sendThreadMessage(threadId, msg, uid);
+      } else if (!isDemoDone && !isUnlocked && threadId) {
+        sendThreadDemoMessage(threadId, msg);
+      }
     },
-    [auth.user?.uid, threadId]
+    [auth.user?.uid, isDemoDone, isUnlocked, threadId]
   );
 
   useEffect(() => {
     intervalId.current = window.setInterval(async () => {
-      if (isDone || !auth.user?.uid) {
-        return;
-      }
-      if (!threadId) return;
+      if (!threadId || isDisabled) return;
       const response = await getMessages(threadId);
       if (!response) return;
-      setTimeout(() => {
-        setThreadOutcome(response.thread_status.outcome);
-        setIsDone(response.thread_status.done);
-        setFinalTC(response.thread_status.final_tc);
-      }, 1000);
       const msgs = getMessagesFromApiData(response);
       if (msgs.length !== messagesLengthRef.current) {
         setMessages(msgs);
@@ -60,13 +55,10 @@ export const useThread = (): IUseThreadData => {
     return () => {
       clearInterval(intervalId.current);
     };
-  }, [auth.user?.uid, isDone, threadId]);
+  }, [auth.user?.uid, isDisabled, threadId]);
 
   return {
     sendMessage,
     messages,
-    isDone,
-    threadOutcome,
-    finalTC,
   };
 };
