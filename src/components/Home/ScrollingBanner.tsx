@@ -20,7 +20,7 @@ const ScrollingBanner = () => {
   ];
 
   return (
-    <Marquee className="border-y-2 p-2 font-vt323 text-xl w-screen">
+    <Marquee className="border-y-2 p-2 font-vt323 text-xl w-screen max-w-[100vw]">
       <div className="flex gap-10">
         <span className="my-auto ml-10">Latest High Scores: </span>
         {scores.map((e) => {
