@@ -21,7 +21,6 @@ export interface IAppContext {
 
 interface IMessage {
   id: string;
-  assistant_id: string;
   content: {
     text: {
       value: string;
@@ -30,14 +29,14 @@ interface IMessage {
   role: "user" | "assistant";
 }
 
-interface IAPIResponse<T> {
+export interface IAPIResponse<T> {
   success: boolean;
+  error_msg?: string;
   data: T;
 }
 
 export interface ICreateThreadData {
   threadId: string;
-  assistantId: string;
   messages: { data: IMessage[] };
 }
 
@@ -51,17 +50,24 @@ export enum ThreadOutcome {
 
 export interface IThreadData {
   messages: { data: IMessage[] };
-  thread_status: {
-    outcome: ThreadOutcome;
-    done: boolean;
-    final_tc?: number;
-  };
+  isDisabled: boolean;
 }
 export type IThreadDataResponse = IAPIResponse<IThreadData>;
 
 export interface ISendMessageRequest {
   thread_id: string;
   message: string;
+  uid: string;
+}
+
+export type ISendDemoMessageRequest = Omit<ISendMessageRequest, "uid">;
+
+export interface IUnlockThreadRequest {
+  uid: string;
+  thread_id: string;
+}
+
+export interface ICreateAndUnlockThreadRequest {
   uid: string;
 }
 

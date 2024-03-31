@@ -20,13 +20,14 @@ const ScrollingBanner = () => {
   ];
 
   return (
-    <Marquee className="border-y-2 p-2 font-vt323 text-xl">
+    <Marquee className="border-y-2 p-2 font-vt323 text-xl w-screen">
       <div className="flex gap-10">
         <span className="my-auto ml-10">Latest High Scores: </span>
         {scores.map((e) => {
           const numWithCommas = numberWithCommas(e.score);
           return (
             <Chip
+              key={`${e.name}-${e.score}`}
               label={`${e.name}: ${
                 e.score > 250000 ? `🔥$${numWithCommas}🔥` : `$${numWithCommas}`
               }`}

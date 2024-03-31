@@ -9,13 +9,7 @@ import {
 import { ThreadOutcome } from "../../common/types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { isNil } from "lodash";
-import { useNavigate } from "react-router-dom";
-
-interface Props {
-  isDone: boolean;
-  threadOutcome: ThreadOutcome;
-  finalTC: number | undefined;
-}
+import { useThreadInfo } from "../../common/useThreadInfo";
 
 function generateXMessage(threadOutcome: ThreadOutcome, finalTC?: number) {
   if (threadOutcome === ThreadOutcome.ACCEPTED && !isNil(finalTC)) {
@@ -26,17 +20,13 @@ function generateXMessage(threadOutcome: ThreadOutcome, finalTC?: number) {
   }
 }
 
-const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
-  const navigate = useNavigate();
+const FinishedModal: React.FC = () => {
+  const { isDisabled, finalTC, threadOutcome } = useThreadInfo();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    setIsOpen(isDone);
-  }, [isDone]);
-
-  const onClickTryAgain = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
+    setIsOpen(isDisabled);
+  }, [isDisabled]);
 
   const title = useMemo(() => {
     if (threadOutcome === ThreadOutcome.ACCEPTED) {
@@ -77,7 +67,7 @@ const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
 
   const onClickShare = useCallback(() => {
     const url = location.origin;
-    const text = generateXMessage(threadOutcome, finalTC);
+    const text = generateXMessage(threadOutcome, finalTC ?? undefined);
     if (isNil(text)) return;
     window.open(
       "http://twitter.com/share?url=" +
@@ -110,9 +100,6 @@ const FinishedModal: React.FC<Props> = ({ isDone, threadOutcome, finalTC }) => {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" variant="contained" onClick={onClickTryAgain}>
-              Try Again
-            </Button>
             {canShare && (
               <Button size="small" variant="outlined" onClick={onClickShare}>
                 Share on X

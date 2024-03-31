@@ -22,3 +22,15 @@ export function getRandomNormalHRMood(): HRMood {
     return HRMood.NORMAL_3;
   }
 }
+
+export function checkIfPlayable(
+  isDisabled: boolean,
+  isDemoDone: boolean,
+  isUnlocked: boolean,
+  threadUid: string,
+  userUid: string
+) {
+  const isPlayable =
+    !isDisabled && (!isDemoDone || (isUnlocked && threadUid === userUid));
+  return isPlayable;
+}
