@@ -83,9 +83,9 @@ const Chat: React.FC<Props> = ({ messages, sendMessage }) => {
   }, [auth.user?.uid, isDemoDone, isDisabled, isUnlocked, threadUserUid]);
 
   return (
-    <div className="h-[60vh] w-11/12 md:w-2/3 lg:w-2/3 xl:w-2/3 2xl:1/2 mx-auto rounded-2xl bg-gray-600 p-2 pr-1 grid border-2 border-gray-500">
+    <div className="h-[55vh] w-11/12 md:w-2/3 lg:w-2/3 xl:w-2/3 2xl:1/2 mx-auto rounded-2xl bg-gray-600 p-2 pr-1 grid border-2 border-gray-500">
       <div
-        className="h-[47vh] grid gap-2 auto-rows-min overflow-auto scroll-smooth no-scrollbar"
+        className="h-[calc(55vh-100px)] grid gap-2 auto-rows-min overflow-auto scroll-smooth no-scrollbar"
         id="messages-list"
       >
         {messagesForDisplay?.map((e, i) => {
